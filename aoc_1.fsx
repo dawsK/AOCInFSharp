@@ -16,6 +16,6 @@ let getFuelFromMass =
 
 let writeResult filePath (result) = System.IO.File.WriteAllText(filePath, string result)
 
-readLines "C:\\code\\AdventOfCode\\aoc_input_1.txt"
+readLines "aoc_input_1.txt"
 |> Seq.sumBy getFuelFromMass
-|> writeResult "C:\\code\\AdventOfCode\\aoc_output_1.txt"
+|> writeResult "aoc_output_1.txt"
