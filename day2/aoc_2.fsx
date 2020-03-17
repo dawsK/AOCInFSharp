@@ -1,6 +1,23 @@
 open System
 
-type OpCode = private OpCode of int
+type Shape =
+    | Rectangle of width : float * length : float
+    | Circle of radius : float
+    | Prism of width : float * float * height : float
+
+type OpCode = 
+   private 
+   | ADD of int
+   | MULT of int
+   | HALT of int
+   
+type Position = Position of int
+type ProgramValue = ProgramValue of int
+
+type ProgramCode =
+  | OpCode
+  | Position
+  | ProgramValue
 
 module OpCode = 
   
@@ -10,30 +27,44 @@ module OpCode =
       |_ -> false
    
   let create (code:int) =
-    if (isOpCode code) then
-      Some (OpCode code)
-    else 
-      None
+    match code with
+      | 1 -> Ok (ADD code)
+      | 2 -> Ok (MULT code)
+      | 99 -> Ok (HALT code)
+      | _ -> Error (sprintf "unknown OpCode %i" code)
 
-  let value (OpCode code) = code
+  let value code = 
+    match code with
+    | ADD code -> 1
+    | MULT code -> 2
+    | HALT code -> 99
+  
 
 let readLines filePath = System.IO.File.ReadLines(filePath)
 let writeResult filePath (result) = System.IO.File.WriteAllText(filePath, string result)
 let writeOpCode filePath (result:int) : unit = System.IO.File.WriteAllText(filePath, string result)
 
-let restoreProgramState input = input
-let getProgramResult input = input
-let splitLine = (fun (line:string) -> Seq.toArray (line.Split ',') )
-readLines "day2/aoc_input_2.txt"
+let stringToProgramCode = int >> OpCode.create
+let restoreProgramState (input:int list) = 
+  match input with
+  | [] -> input
+  | opCode::_::_::rest -> opCode::12::2::rest
+  | _ -> input
 
-|> Seq.collect splitLine
+let getProgramResult input = input
+let splitLine (line:string) = 
+  line.Split ',' 
+  |> Seq.map int
+
+// Program starts
+readLines "day2/aoc_input_2.txt"
+|> Seq.collect splitLine |> Seq.toList
 |> restoreProgramState
 |> getProgramResult
-|> Seq.head |> int
-|> OpCode.create 
+|> Seq.head
 |> (fun op -> 
 match op with 
   | Some o -> writeOpCode  "day2/aoc_output_2.txt" (OpCode.value o) //Option.fold (fun _ o -> OpCode.value o) -1
   | None -> ())
 
- 
+
