@@ -76,7 +76,7 @@ let getGreeting language dayPart =
         | (Tagalog, Morning) -> "Magandang Umaga"
         | (Tagalog, Afternoon) -> "Magandang hapon"
         | (Tagalog, Evening) -> "Magandang gabi"
-        | (Tagalog, Night) -> "Magandang gabi"c
+        | (Tagalog, Night) -> "Magandang gabi"
 
         | (English, Morning) -> "Good morning"
         | (English, Afternoon) -> "Good afternoon"
