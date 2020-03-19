@@ -98,6 +98,6 @@ let getDayPart (time:DateTime) =
 
 let getCurrentGreeting language = getDayPart DateTime.Now |> getGreeting language
 
-getDayPart DateTime.Now |> getGreeting Bangla
+getCurrentGreeting French |> Console.WriteLine
 
 // https://repl.it/repls/EnlightenedVibrantFrontpage
